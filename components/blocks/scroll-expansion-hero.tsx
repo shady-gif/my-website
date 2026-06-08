@@ -184,7 +184,6 @@ const ScrollExpandMedia = ({
               }}
               priority
             />
-            <div className="absolute inset-0 bg-black/10" />
           </motion.div>
 
           <div className="container relative z-10 mx-auto flex flex-col items-center justify-start">
@@ -264,13 +263,6 @@ const ScrollExpandMedia = ({
                       width={1280}
                       height={720}
                       className="h-full w-full rounded-xl object-cover"
-                    />
-
-                    <motion.div
-                      className="absolute inset-0 rounded-xl bg-black/50"
-                      initial={{ opacity: 0.7 }}
-                      animate={{ opacity: 0.7 - scrollProgress * 0.3 }}
-                      transition={{ duration: 0.2 }}
                     />
                   </div>
                 )}
