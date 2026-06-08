@@ -12,27 +12,33 @@ interface DockItem {
 }
 
 const dockItems = [
-  
   {
     id: "ai-ppt",
     name: "Free AI PPT",
     image: "/ai-ppt.jpeg",
+    onClick: () => window.open("https://shadyyppt.vercel.app/app", "_blank"),
   },
   {
     id: "ai-pics",
     name: "Free AI Pics",
     image: "/ai-pics.jpeg",
+    onClick: () => window.open("https://for-ppt.vercel.app/", "_blank"),
   },
-  
   {
     id: "quick-game",
     name: "Quick Game?",
     image: "/quick-game.jpeg",
+    onClick: () => window.open("https://coastal-break-run.vercel.app/", "_blank"),
   },
   {
     id: "go-top",
     name: "Go Top",
     image: "/go-top.jpeg",
+    onClick: () =>
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      }),
   },
 ]
 
