@@ -51,7 +51,7 @@ const ScrollExpandMedia = ({
     const handleWheel = (e: globalThis.WheelEvent) => {
       const isAtTop = window.scrollY <= 5;
 
-      if (mediaFullyExpanded && !isAtTop) return;
+      if (mediaFullyExpanded && e.deltaY > 0) return;
 
       e.preventDefault();
 
