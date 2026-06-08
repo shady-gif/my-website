@@ -137,7 +137,7 @@ export default function Home() {
       <ScrollExpandMedia
   mediaType="image"
   mediaSrc="/employer-hero.png"
-  bgImageSrc="/placeholder.png"
+  bgImageSrc="/bigsleep.jpg"
         title={
           <AnimatedText
             text="नमस्ते, kind stranger."
