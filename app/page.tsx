@@ -135,9 +135,9 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <ScrollExpandMedia
-        mediaType="image"
-        mediaSrc="/placeholder.png"
-        bgImageSrc="/placeholder.png"
+  mediaType="image"
+  mediaSrc="/employer-hero.png"
+  bgImageSrc="/placeholder.png"
         title={
           <AnimatedText
             text="नमस्ते, kind stranger."
