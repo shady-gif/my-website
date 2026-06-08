@@ -49,38 +49,40 @@ const ScrollExpandMedia = ({
 
   useEffect(() => {
     const handleWheel = (e: globalThis.WheelEvent) => {
-      if (mediaFullyExpanded) return;
+      const isAtTop = window.scrollY <= 5;
+
+      if (mediaFullyExpanded && !isAtTop) return;
 
       e.preventDefault();
 
       setScrollProgress((prev) => {
-        const newProgress = Math.min(Math.max(prev + e.deltaY * 0.00065, 0), 1);
+        const nextProgress = Math.min(
+          Math.max(prev + e.deltaY * 0.0005, 0),
+          1
+        );
 
-        if (newProgress >= 1) {
+        if (nextProgress >= 1) {
           setMediaFullyExpanded(true);
           setShowContent(true);
-        } else if (newProgress < 0.75) {
+        }
+
+        if (nextProgress < 0.75) {
           setShowContent(false);
         }
 
-        return newProgress;
+        if (nextProgress <= 0) {
+          setMediaFullyExpanded(false);
+          setShowContent(false);
+        }
+
+        return nextProgress;
       });
     };
 
-    const handleScroll = () => {
-      if (window.scrollY <= 5 && mediaFullyExpanded) {
-        setScrollProgress(90);
-        setShowContent(false);
-        setMediaFullyExpanded(false);
-      }
-    };
-
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, [mediaFullyExpanded]);
 
@@ -100,7 +102,11 @@ const ScrollExpandMedia = ({
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!touchStartY || mediaFullyExpanded) return;
+    if (!touchStartY) return;
+
+    const isAtTop = window.scrollY <= 5;
+
+    if (mediaFullyExpanded && !isAtTop) return;
 
     e.preventDefault();
 
@@ -109,16 +115,23 @@ const ScrollExpandMedia = ({
     const scrollDelta = deltaY * 0.003;
 
     setScrollProgress((prev) => {
-      const newProgress = Math.min(Math.max(prev + scrollDelta, 0), 1);
+      const nextProgress = Math.min(Math.max(prev + scrollDelta, 0), 1);
 
-      if (newProgress >= 1) {
+      if (nextProgress >= 1) {
         setMediaFullyExpanded(true);
         setShowContent(true);
-      } else if (newProgress < 0.75) {
+      }
+
+      if (nextProgress < 0.75) {
         setShowContent(false);
       }
 
-      return newProgress;
+      if (nextProgress <= 0) {
+        setMediaFullyExpanded(false);
+        setShowContent(false);
+      }
+
+      return nextProgress;
     });
 
     setTouchStartY(touchY);
