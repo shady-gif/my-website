@@ -54,7 +54,7 @@ const ScrollExpandMedia = ({
       e.preventDefault();
 
       setScrollProgress((prev) => {
-        const newProgress = Math.min(Math.max(prev + e.deltaY * 0.00045, 0), 1);
+        const newProgress = Math.min(Math.max(prev + e.deltaY * 0.00075, 0), 1);
 
         if (newProgress >= 1) {
           setMediaFullyExpanded(true);
@@ -68,15 +68,11 @@ const ScrollExpandMedia = ({
     };
 
     const handleScroll = () => {
-
       if (window.scrollY <= 5 && mediaFullyExpanded) {
-    
-        setMediaFullyExpanded(false);
-    
+        setScrollProgress(0);
         setShowContent(false);
-    
+        setMediaFullyExpanded(false);
       }
-    
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
