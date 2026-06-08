@@ -49,9 +49,17 @@ const ScrollExpandMedia = ({
 
   useEffect(() => {
     const handleWheel = (e: globalThis.WheelEvent) => {
-      const isAtTop = window.scrollY <= 5;
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+      const atTop = window.scrollY <= 5;
 
-      if (mediaFullyExpanded && e.deltaY > 0) return;
+      if (mediaFullyExpanded && scrollingDown) {
+        return;
+      }
+
+      if (mediaFullyExpanded && scrollingUp && !atTop) {
+        return;
+      }
 
       e.preventDefault();
 
@@ -104,14 +112,23 @@ const ScrollExpandMedia = ({
   const handleTouchMove = (e: TouchEvent) => {
     if (!touchStartY) return;
 
-    const isAtTop = window.scrollY <= 5;
+    const touchY = e.touches[0].clientY;
+    const deltaY = touchStartY - touchY;
 
-    if (mediaFullyExpanded && !isAtTop) return;
+    const swipingUp = deltaY > 0;
+    const swipingDown = deltaY < 0;
+    const atTop = window.scrollY <= 5;
+
+    if (mediaFullyExpanded && swipingUp) {
+      return;
+    }
+
+    if (mediaFullyExpanded && swipingDown && !atTop) {
+      return;
+    }
 
     e.preventDefault();
 
-    const touchY = e.touches[0].clientY;
-    const deltaY = touchStartY - touchY;
     const scrollDelta = deltaY * 0.003;
 
     setScrollProgress((prev) => {
