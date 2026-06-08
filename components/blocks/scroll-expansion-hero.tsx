@@ -67,13 +67,7 @@ const ScrollExpandMedia = ({
       });
     };
 
-    const handleScroll = () => {
-      if (window.scrollY <= 5 && mediaFullyExpanded) {
-        setScrollProgress(0);
-        setShowContent(false);
-        setMediaFullyExpanded(false);
-      }
-    };
+    const handleScroll = () => {};
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('scroll', handleScroll, { passive: true });
