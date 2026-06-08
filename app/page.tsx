@@ -18,8 +18,8 @@ const parallaxImages = [
   { src: '/b.png', alt: 'Image B' },
   { src: '/c.png', alt: 'Image C' },
   { src: '/d.png', alt: 'Image D' },
-  { src: '/e.png', alt: 'Image E' },
   { src: '/a.png', alt: 'Image A' },
+  { src: '/e.png', alt: 'Image E' },
   { src: '/g.jpg', alt: 'Image G' },
 ];
 
