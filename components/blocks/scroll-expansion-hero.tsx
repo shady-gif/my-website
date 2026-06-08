@@ -253,12 +253,7 @@ const ScrollExpandMedia = ({
                         style={{ pointerEvents: 'none' }}
                       />
 
-                      <motion.div
-                        className="absolute inset-0 rounded-xl bg-black/30"
-                        initial={{ opacity: 0.7 }}
-                        animate={{ opacity: 0.5 - scrollProgress * 0.3 }}
-                        transition={{ duration: 0.2 }}
-                      />
+                      
                     </div>
                   )
                 ) : (
