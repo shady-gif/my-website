@@ -141,8 +141,8 @@ export default function Home() {
         title={
           <AnimatedText
             text="नमस्ते, beloved guest."
-            textClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200"
-            underlineClassName="text-blue-200"
+            textClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-[#F4E4C1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
+underlineClassName="text-[#F4E4C1]"
           />
         }
         date="You've been expected."

@@ -269,7 +269,7 @@ const ScrollExpandMedia = ({
                 <div className="relative z-10 mt-4 flex flex-col items-center text-center transition-none">
                   {date && (
                     <p
-                      className="text-2xl text-blue-200"
+                      className="text-2xl text-[#FFF8EE] drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
                       style={{
                         transform: `translateX(-${textTranslateX}vw)`,
                       }}
@@ -280,7 +280,7 @@ const ScrollExpandMedia = ({
 
                   {scrollToExpand && (
                     <p
-                      className="text-center font-medium text-blue-200"
+                      className="text-center font-medium text-[#FFF8EE] drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
                       style={{
                         transform: `translateX(${textTranslateX}vw)`,
                       }}
@@ -297,7 +297,7 @@ const ScrollExpandMedia = ({
                 }`}
               >
                 <motion.div
-                  className="text-4xl font-bold text-blue-200 transition-none md:text-5xl lg:text-6xl"
+                  className="text-4xl font-bold text-[#F4E4C1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)] transition-none md:text-5xl lg:text-6xl"
                   style={{
                     transform: `translateX(-${textTranslateX}vw)`,
                   }}
