@@ -47,6 +47,20 @@ export default function RootLayout({
             );
           `}
         </Script>
+
+        <Script id="monetag-vignette" strategy="afterInteractive">
+          {`
+            (function(s){
+              s.dataset.zone='11119505';
+              s.src='https://n6wxm.com/vignette.min.js';
+            })(
+              [document.documentElement, document.body]
+                .filter(Boolean)
+                .pop()
+                .appendChild(document.createElement('script'))
+            );
+          `}
+        </Script>
       </body>
     </html>
   );
