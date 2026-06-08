@@ -14,13 +14,13 @@ import { TextRotate } from '@/components/ui/text-rotate';
 import { ZoomParallax } from '@/components/ui/zoom-parallax';
 
 const parallaxImages = [
-  { src: '/placeholder.png', alt: 'Image 1' },
-  { src: '/placeholder.png', alt: 'Image 2' },
-  { src: '/placeholder.png', alt: 'Image 3' },
-  { src: '/placeholder.png', alt: 'Image 4' },
-  { src: '/placeholder.png', alt: 'Image 5' },
-  { src: '/placeholder.png', alt: 'Image 6' },
-  { src: '/placeholder.png', alt: 'Image 7' },
+  { src: '/a.png', alt: 'Image A' },
+  { src: '/b.png', alt: 'Image B' },
+  { src: '/c.png', alt: 'Image C' },
+  { src: '/d.png', alt: 'Image D' },
+  { src: '/e.png', alt: 'Image E' },
+  { src: '/f.png', alt: 'Image F' },
+  { src: '/g.jpg', alt: 'Image G' },
 ];
 
 const bentoItems = [
