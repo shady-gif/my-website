@@ -123,6 +123,19 @@ const ScrollExpandMedia = ({
     );
 
     window.addEventListener('touchend', handleTouchEnd as EventListener);
+    window.addEventListener('scroll', () => {
+
+      if (window.scrollY <= 5) {
+    
+        setScrollProgress(0);
+    
+        setShowContent(false);
+    
+        setMediaFullyExpanded(false);
+    
+      }
+    
+    });
 
     return () => {
       window.removeEventListener(
