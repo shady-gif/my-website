@@ -14,12 +14,12 @@ import { TextRotate } from '@/components/ui/text-rotate';
 import { ZoomParallax } from '@/components/ui/zoom-parallax';
 
 const parallaxImages = [
-  { src: '/a.png', alt: 'Image A' },
+  { src: '/f.png', alt: 'Image F' },
   { src: '/b.png', alt: 'Image B' },
   { src: '/c.png', alt: 'Image C' },
   { src: '/d.png', alt: 'Image D' },
   { src: '/e.png', alt: 'Image E' },
-  { src: '/f.png', alt: 'Image F' },
+  { src: '/a.png', alt: 'Image A' },
   { src: '/g.jpg', alt: 'Image G' },
 ];
 
