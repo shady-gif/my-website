@@ -140,14 +140,13 @@ export default function Home() {
   bgImageSrc="/bigsleep.jpg"
         title={
           <AnimatedText
-            text="नमस्ते, kind stranger."
+            text="नमस्ते, kind guest."
             textClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200"
             underlineClassName="text-blue-200"
           />
         }
         date="You've been expected."
         scrollToExpand="↓"
-        textBlend
       >
         <Logos3 />
       </ScrollExpandMedia>
