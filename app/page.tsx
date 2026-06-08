@@ -1,65 +1,198 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { LayoutGroup, motion } from 'motion/react';
+
+import InteractiveBentoGallery from '@/components/blocks/interactive-bento-gallery';
+import { Logos3 } from '@/components/blocks/logos3';
+import ScrollExpandMedia from '@/components/blocks/scroll-expansion-hero';
+import { AnimatedText } from '@/components/ui/animated-underline-text-one';
+import { DockTabs } from '@/components/ui/dock-tabs';
+import Footer1 from '@/components/ui/footer-1';
+import { MagicTextReveal } from '@/components/ui/magic-text-reveal';
+import { TextRotate } from '@/components/ui/text-rotate';
+import { ZoomParallax } from '@/components/ui/zoom-parallax';
+
+const parallaxImages = [
+  { src: '/placeholder.png', alt: 'Image 1' },
+  { src: '/placeholder.png', alt: 'Image 2' },
+  { src: '/placeholder.png', alt: 'Image 3' },
+  { src: '/placeholder.png', alt: 'Image 4' },
+  { src: '/placeholder.png', alt: 'Image 5' },
+  { src: '/placeholder.png', alt: 'Image 6' },
+  { src: '/placeholder.png', alt: 'Image 7' },
+];
+
+const bentoItems = [
+  {
+    id: 1,
+    type: 'video-ad',
+    title: 'Rewarded Video Slot',
+    desc: 'Landscape ad placement reserved for video demand.',
+    url: '',
+    span: 'col-span-1 sm:col-span-2 row-span-4',
+    adTagUrl: process.env.NEXT_PUBLIC_VIDEO_AD_TAG_URL,
+  },
+  {
+    id: 2,
+    type: 'display-ad',
+    title: 'Square Display Slot 1',
+    desc: 'Responsive square display ad.',
+    url: '',
+    span: 'col-span-1 row-span-3',
+    adSlot: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SQUARE_1,
+  },
+  {
+    id: 3,
+    type: 'display-ad',
+    title: 'Square Display Slot 2',
+    desc: 'Responsive square display ad.',
+    url: '',
+    span: 'col-span-1 row-span-3',
+    adSlot: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SQUARE_2,
+  },
+  {
+    id: 4,
+    type: 'video-ad',
+    title: 'Video Demand Slot',
+    desc: 'Landscape ad placement reserved for video demand.',
+    url: '',
+    span: 'col-span-1 sm:col-span-2 row-span-4',
+    adTagUrl: process.env.NEXT_PUBLIC_VIDEO_AD_TAG_URL,
+  },
+  {
+    id: 5,
+    type: 'display-ad',
+    title: 'Square Display Slot 3',
+    desc: 'Responsive square display ad.',
+    url: '',
+    span: 'col-span-1 row-span-3',
+    adSlot: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SQUARE_3,
+  },
+  {
+    id: 6,
+    type: 'display-ad',
+    title: 'Square Display Slot 4',
+    desc: 'Responsive square display ad.',
+    url: '',
+    span: 'col-span-1 row-span-3',
+    adSlot: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SQUARE_4,
+  },
+];
+
+function TextRotateDemo() {
+  return (
+    <section className="w-full bg-white py-6">
+      <div className="flex w-full flex-row items-center justify-center overflow-hidden bg-white p-6 text-2xl font-light text-foreground sm:p-10 sm:text-3xl md:p-12 md:text-5xl">
+        <LayoutGroup>
+          <motion.div className="flex whitespace-pre" layout>
+            <motion.span
+              className="pt-0.5 sm:pt-1 md:pt-2"
+              layout
+              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+            >
+              Free{' '}
+            </motion.span>
+
+            <TextRotate
+              texts={[
+                'AI Pics',
+                'AI PPT',
+                'Marketing Automation',
+                'Forever ❤️',
+              ]}
+              mainClassName="justify-center overflow-hidden rounded-lg bg-[#ff5941] px-2 py-0.5 text-white sm:px-2 sm:py-1 md:px-3 md:py-2"
+              staggerFrom="last"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-120%' }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+              rotationInterval={2200}
+            />
+          </motion.div>
+        </LayoutGroup>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
+  const [showDock, setShowDock] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowDock(window.scrollY > window.innerHeight * 0.8);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="min-h-screen">
+      <ScrollExpandMedia
+        mediaType="image"
+        mediaSrc="/placeholder.png"
+        bgImageSrc="/placeholder.png"
+        title={
+          <AnimatedText
+            text="नमस्ते, kind stranger."
+            textClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200"
+            underlineClassName="text-blue-200"
+          />
+        }
+        date="You've been expected."
+        scrollToExpand="↓"
+        textBlend
+      >
+        <Logos3 />
+      </ScrollExpandMedia>
+
+      <ZoomParallax images={parallaxImages} />
+
+      <TextRotateDemo />
+
+      <section className="bg-white py-10">
+
+<InteractiveBentoGallery
+
+  title="Keep This Site Free!"
+
+  description="A quick ad view helps support the site and keep it free for everyone. Thanks for being part of the community."
+
+  mediaItems={bentoItems}
+
+/>
+
+</section>
+
+      <section className="grid min-h-screen grid-rows-2">
+
+  <div className="flex items-center justify-center bg-white px-6">
+
+  <MagicTextReveal
+
+text="Developed by सार्थक"
+
+fontSize={72}
+
+color="#FFA239"
+
+className="border-0 shadow-none bg-transparent"
+
+/>
+
+  </div>
+
+  <Footer1 />
+
+</section>
+
+      {showDock && <DockTabs />}
+    </main>
   );
 }
