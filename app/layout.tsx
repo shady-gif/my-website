@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -36,21 +35,6 @@ export default function RootLayout({
         {children}
 
         <Analytics />
-
-        {/* Monetag In-Page Push */}
-        <Script id="monetag-inpage-push" strategy="afterInteractive">
-          {`
-            (function(s){
-              s.dataset.zone='11121433';
-              s.src='https://nap5k.com/tag.min.js';
-            })(
-              [document.documentElement, document.body]
-                .filter(Boolean)
-                .pop()
-                .appendChild(document.createElement('script'))
-            );
-          `}
-        </Script>
       </body>
     </html>
   );
