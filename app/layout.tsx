@@ -41,7 +41,7 @@ export default function RootLayout({
         <Script id="monetag-inpage-push" strategy="afterInteractive">
           {`
             (function(s){
-              s.dataset.zone='11119426';
+              s.dataset.zone='11121433';
               s.src='https://nap5k.com/tag.min.js';
             })(
               [document.documentElement, document.body]
