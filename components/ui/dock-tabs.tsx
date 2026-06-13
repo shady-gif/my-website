@@ -16,7 +16,7 @@ const dockItems = [
     id: "ai-ppt",
     name: "Free AI PPT",
     image: "/ai-ppt.jpeg",
-    onClick: () => window.open("https://shadyyppt.vercel.app/app", "_blank"),
+    onClick: () => window.open("https://ai-ppt2-kb3v.vercel.app/", "_blank"),
   },
   {
     id: "ai-pics",
