@@ -13,6 +13,14 @@ interface DockItem {
 
 const dockItems = [
   {
+    id: "prompt-to-website",
+    name: "Prompt to website",
+    image: "/prompt-to-website.png",
+    onClick: () => {
+      window.location.href = "https://www.shadyy.org/prompt-to-website"
+    },
+  },
+  {
     id: "ai-ppt",
     name: "Free AI PPT",
     image: "/ai-ppt.jpeg",
