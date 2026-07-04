@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/ppt",
+        destination: "https://presenton-vercel-worker.vercel.app",
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

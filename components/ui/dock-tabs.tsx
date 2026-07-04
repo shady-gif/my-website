@@ -24,7 +24,9 @@ const dockItems = [
     id: "ai-ppt",
     name: "Free AI PPT",
     image: "/ai-ppt.jpeg",
-    onClick: () => window.open("https://ai-ppt2-kb3v.vercel.app/", "_blank"),
+    onClick: () => {
+      window.location.href = "/ppt"
+    },
   },
   {
     id: "ai-pics",
