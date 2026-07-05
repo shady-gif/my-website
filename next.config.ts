@@ -5,14 +5,6 @@ const nextConfig: NextConfig = {
     return {
       afterFiles: [
         {
-          source: "/ppt",
-          destination: "https://presenton-vercel-worker.vercel.app/ppt",
-        },
-        {
-          source: "/ppt/:path*",
-          destination: "https://presenton-vercel-worker.vercel.app/ppt/:path*",
-        },
-        {
           source: "/prompt-to-website",
           destination: "https://shadyy-preview.vercel.app/prompt-to-website",
         },

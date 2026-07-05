@@ -7,11 +7,12 @@ const PRESENTON_BASE_URL = (
 
 async function forwardToPresenton(
   request: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
+  context: { params: Promise<{ path?: string[] }> }
 ) {
-  const { path } = await context.params;
+  const { path = [] } = await context.params;
+  const suffix = path.length ? `/${path.join("/")}` : "";
   const targetUrl = new URL(
-    `/ppt/api/v1/${path.join("/")}${request.nextUrl.search}`,
+    `/ppt${suffix}${request.nextUrl.search}`,
     PRESENTON_BASE_URL
   );
 
