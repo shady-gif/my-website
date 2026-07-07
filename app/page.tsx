@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight, Store } from 'lucide-react';
 import { LayoutGroup, motion } from 'motion/react';
 
 import InteractiveBentoGallery from '@/components/blocks/interactive-bento-gallery';
@@ -118,6 +120,40 @@ function TextRotateDemo() {
   );
 }
 
+function MiniStoreCta() {
+  return (
+    <section className="bg-[#f7faf8] px-6 py-12">
+      <div className="mx-auto grid max-w-6xl gap-6 rounded-lg border border-[#dce5df] bg-white p-6 shadow-[0_18px_50px_rgba(23,32,31,0.08)] md:grid-cols-[1fr_auto] md:items-center md:p-8">
+        <div className="flex gap-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-[#173f35] text-white">
+            <Store className="h-6 w-6" />
+          </span>
+          <div>
+            <p className="mb-2 text-sm font-black uppercase tracking-normal text-[#17664a]">
+              Mini Store
+            </p>
+            <h2 className="text-3xl font-black leading-tight tracking-normal text-[#17201f] md:text-4xl">
+              Install Mautic locally.
+            </h2>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-[#60706b]">
+              Download the local Mini Store, click Install, and open Mautic on
+              localhost when setup is ready.
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/mini-store"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#173f35] px-5 text-sm font-black text-white transition hover:bg-[#102f27]"
+        >
+          Mini Store
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [showDock, setShowDock] = useState(false);
 
@@ -154,6 +190,8 @@ underlineClassName="text-[#F4E4C1]"
       <ZoomParallax images={parallaxImages} />
 
       <TextRotateDemo />
+
+      <MiniStoreCta />
 
       <section className="bg-white py-10">
 
