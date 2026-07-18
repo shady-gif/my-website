@@ -16,6 +16,14 @@ function getMobileSitePath(pathname: string) {
 }
 
 export function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
+  if (request.nextUrl.pathname.startsWith("/downloads/")) {
+    return new NextResponse("Access required", { status: 404 });
+  }
+
   const { device, isBot } = userAgent(request);
   const isMobileVisitor = device.type === "mobile" || device.type === "tablet";
 

@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
           destination: "https://shadyy-preview.vercel.app/prompt-to-website/:path*",
         },
         {
-          source: "/api/:path*",
+          source: "/api/:path((?!mini-store|editor).*)",
           destination: "https://shadyy-preview.vercel.app/api/:path*",
         },
       ],
