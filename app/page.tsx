@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Store } from 'lucide-react';
+import { ArrowRight, PanelsTopLeft, Store } from 'lucide-react';
 import { LayoutGroup, motion } from 'motion/react';
 
 import InteractiveBentoGallery from '@/components/blocks/interactive-bento-gallery';
@@ -133,10 +133,10 @@ function MiniStoreCta() {
               Mini Store
             </p>
             <h2 className="text-3xl font-black leading-tight tracking-normal text-[#17201f] md:text-4xl">
-              Install Mautic locally.
+              Install Signals locally.
             </h2>
             <p className="mt-3 max-w-2xl text-base leading-7 text-[#60706b]">
-              Download the local Mini Store, click Install, and open Mautic on
+              Download the local Mini Store, click Install, and open Signals on
               localhost when setup is ready.
             </p>
           </div>
@@ -147,6 +147,43 @@ function MiniStoreCta() {
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#173f35] px-5 text-sm font-black text-white transition hover:bg-[#102f27]"
         >
           Mini Store
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function TemplatesCta() {
+  return (
+    <section className="relative overflow-hidden bg-[#e7bd66] px-6 py-14">
+      <div className="pointer-events-none absolute inset-0 bg-[url('/bigsleep.jpg')] bg-cover bg-center opacity-35" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,248,238,0.9),rgba(231,189,102,0.78))]" />
+
+      <div className="relative mx-auto grid max-w-6xl gap-6 rounded-lg border border-[#17110b]/10 bg-[#fff8ee]/45 p-6 shadow-[0_24px_80px_rgba(73,44,18,0.16)] backdrop-blur-md md:grid-cols-[1fr_auto] md:items-center md:p-8">
+        <div className="flex gap-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-[#17110b] text-[#fff8ee]">
+            <PanelsTopLeft className="h-6 w-6" />
+          </span>
+          <div>
+            <p className="mb-2 text-sm font-black uppercase text-[#8b3a20]">
+              Website previews
+            </p>
+            <h2 className="text-3xl font-black leading-tight text-[#17110b] md:text-4xl">
+              Choose your free website.
+            </h2>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-[#5b3a1f]">
+              Browse 18 cinematic website references, preview the motion, and
+              open the live experience.
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/templates"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#17110b] px-5 text-sm font-black text-[#fff8ee] transition hover:bg-[#2a1b10]"
+        >
+          Preview Websites
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -190,6 +227,8 @@ underlineClassName="text-[#F4E4C1]"
       <ZoomParallax images={parallaxImages} />
 
       <TextRotateDemo />
+
+      <TemplatesCta />
 
       <MiniStoreCta />
 
