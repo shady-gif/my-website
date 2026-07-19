@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
     return {
       afterFiles: [
         {
+          source: "/website-preview",
+          destination: "https://template-preview-gamma.vercel.app/website-preview",
+        },
+        {
+          source: "/website-preview/:path*",
+          destination:
+            "https://template-preview-gamma.vercel.app/website-preview/:path*",
+        },
+        {
           source: "/prompt-to-website",
           destination: "https://shadyy-preview.vercel.app/prompt-to-website",
         },
