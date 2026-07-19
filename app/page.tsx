@@ -180,10 +180,10 @@ function TemplatesCta() {
         </div>
 
         <Link
-          href="/templates"
+          href="https://www.shadyy.org/website-preview"
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#17110b] px-5 text-sm font-black text-[#fff8ee] transition hover:bg-[#2a1b10]"
         >
-          Preview Websites
+          Preview Website
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
