@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
       afterFiles: [
         {
           source: "/website-preview",
-          destination: "https://template-preview-gamma.vercel.app/website-preview",
+          destination:
+            "https://template-preview-gamma.vercel.app/website-preview/templates",
         },
         {
           source: "/website-preview/:path*",
