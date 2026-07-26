@@ -1,0 +1,21 @@
+FROM python:3.10-slim
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PIP_ROOT_USER_ACTION=ignore
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir \
+  torch==2.1.2 \
+  torchvision==0.16.2 \
+  transformers==4.39.3 \
+  huggingface-hub==0.25.2 \
+  numpy==1.26.4
+
+RUN pip install --no-cache-dir iopaint==1.6.0
+
+EXPOSE 8080
+
+CMD ["iopaint", "start", "--model=lama", "--device=cpu", "--host=0.0.0.0", "--port=8080", "--enable-interactive-seg", "--interactive-seg-device=cpu", "--interactive-seg-model=sam2_1_tiny"]

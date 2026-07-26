@@ -1,0 +1,13 @@
+services:
+  iopaint:
+    build:
+      context: .
+      dockerfile: Dockerfile.iopaint
+    image: shadyy-iopaint:local
+    ports:
+      - "18080:8080"
+    volumes:
+      - iopaint-cache:/root/.cache
+
+volumes:
+  iopaint-cache:

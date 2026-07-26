@@ -54,6 +54,11 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          src="/widget.js"
+          data-tenant="shadyy"
+          async
+        />
       </body>
     </html>
   );
