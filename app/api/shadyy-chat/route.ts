@@ -122,7 +122,13 @@ const catalogSearchQueryFromContext = (message: string, context: PageContext) =>
 };
 
 const openAiModel = () =>
-  process.env.SHADYY_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o";
+  process.env.SHADYY_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-5.6-sol";
+
+const openAiReasoningEffort = () =>
+  process.env.SHADYY_OPENAI_REASONING_EFFORT || "medium";
+
+const openAiTextVerbosity = () =>
+  process.env.SHADYY_OPENAI_TEXT_VERBOSITY || "low";
 
 const buildOpenAiSystemPrompt = (
   message: string,
@@ -227,6 +233,12 @@ const callOpenAiSalesAnswer = async ({
     },
     body: JSON.stringify({
       model: openAiModel(),
+      reasoning: {
+        effort: openAiReasoningEffort(),
+      },
+      text: {
+        verbosity: openAiTextVerbosity(),
+      },
       input: [
         {
           role: "system",
