@@ -34,10 +34,16 @@ export async function GET() {
       "SHADYY_ADMIN_TOKEN protects admin APIs.",
     ),
     check(
+      "OpenAI chat",
+      Boolean(process.env.OPENAI_API_KEY),
+      true,
+      "OPENAI_API_KEY powers Shadyy chat responses.",
+    ),
+    check(
       "Flowise",
       hasAll("SHADYY_FLOWISE_API_HOST", "SHADYY_FLOWISE_CHATFLOW_ID"),
-      true,
-      "Set hosted Flowise URL and chatflow ID.",
+      false,
+      "Legacy Flowise config is optional when OpenAI chat is enabled.",
     ),
     check(
       "Postgres",
@@ -62,7 +68,7 @@ export async function GET() {
       "OpenAI embeddings",
       Boolean(process.env.OPENAI_API_KEY),
       true,
-      "OPENAI_API_KEY is required for document/catalog embeddings.",
+      "OPENAI_API_KEY is also required for document/catalog embeddings.",
     ),
     check(
       "Langfuse",

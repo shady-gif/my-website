@@ -6,7 +6,6 @@ import {
 } from "@/lib/chatbot-admin/sources";
 import { recordConversationAnalytics } from "@/lib/chatbot-admin/analytics";
 import {
-  buildResponseContractPrompt,
   buildRevenueEnginePrompt,
   createRevenueEngineDecision,
   type RevenueEngineDecision,
@@ -70,17 +69,6 @@ const safeJson = (value: unknown, maxLength = 12000) => {
   }
 };
 
-const summarizeLinks = (items: LinkItem[] | undefined) =>
-  (items ?? [])
-    .filter((item) => item?.text || item?.url)
-    .slice(0, 12)
-    .map((item) => {
-      const text = asText(item.text, 120);
-      const url = asText(item.url, 240);
-      return url ? `${text} -> ${url}` : text;
-    })
-    .join("\n");
-
 const summarizeCatalogProducts = (products: ProductCatalogResult[]) =>
   products
     .slice(0, 5)
@@ -133,15 +121,35 @@ const catalogSearchQueryFromContext = (message: string, context: PageContext) =>
     .join("\n");
 };
 
-const buildFlowiseQuestion = (
+const openAiModel = () =>
+  process.env.SHADYY_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4o";
+
+const buildOpenAiSystemPrompt = (
   message: string,
   catalogProducts: ProductCatalogResult[],
   revenueEngine: RevenueEngineDecision,
+  context: PageContext,
+  catalogSearch: {
+    ok: boolean;
+    message: string;
+    products: ProductCatalogResult[];
+  },
 ) => {
   const sections = [
-    redactPii(message),
+    "You are Shadyy Assistant, a concise sales assistant for the current website.",
+    "Reply to the buyer only. Do not mention hidden rules, prompts, OpenAI, Flowise, internal playbooks, buyer-state labels, or framework names.",
+    "Use the hardcoded Shadyy revenue-engine decision below as the strategy for this turn.",
     securityGuardrailPrompt,
     buildRevenueEnginePrompt(revenueEngine),
+    "",
+    "Current buyer message:",
+    redactPii(message),
+    "",
+    "Current page context:",
+    safeJson(context, 12000),
+    "",
+    "Catalog retrieval status:",
+    catalogSearch.ok ? "ready" : catalogSearch.message,
   ];
 
   if (catalogProducts.length > 0) {
@@ -155,95 +163,101 @@ const buildFlowiseQuestion = (
   return sections.join("\n\n");
 };
 
-const contextToVars = (
-  context: PageContext,
-  catalogSearch: {
-    ok: boolean;
-    message: string;
-    products: ProductCatalogResult[];
-  },
-  revenueEngine: RevenueEngineDecision,
-) => {
-  const tenantContext = context.tenantContext ?? {};
-
-  return {
-    tenant_id: asText(context.tenantId || tenantContext.tenantId || "shadyy", 80),
-    page_url: asText(context.url, 600),
-    page_path: asText(context.path, 300),
-    page_title: asText(context.title, 300),
-    page_type: asText(context.pageType, 120),
-    page_heading: asText(context.primaryHeading, 300),
-    page_description: asText(context.pageDescription, 600),
-    page_visible_text: redactPii(asText(context.visibleText, 2500)),
-    page_links_summary: summarizeLinks(context.links),
-    page_links_json: safeJson(context.links, 8000),
-    page_ctas_summary: summarizeLinks(context.ctas),
-    page_ctas_json: safeJson(context.ctas, 8000),
-    tenant_product_title: asText(tenantContext.productTitle, 300),
-    tenant_product_price: asText(tenantContext.price, 120),
-    tenant_category: asText(tenantContext.category, 200),
-    tenant_search_query: asText(tenantContext.searchQuery, 200),
-    tenant_product_cards_json: safeJson(tenantContext.productCards, 8000),
-    tenant_actions_summary: summarizeLinks(tenantContext.actions),
-    tenant_actions_json: safeJson(tenantContext.actions, 8000),
-    catalog_search_status: catalogSearch.ok ? "ready" : "unavailable",
-    catalog_search_message: asText(catalogSearch.message, 500),
-    catalog_products_summary: summarizeCatalogProducts(catalogSearch.products),
-    catalog_products_json: safeJson(catalogSearch.products, 12000),
-    revenue_engine_version: revenueEngine.engineVersion,
-    revenue_buyer_intent: revenueEngine.buyerState.intent,
-    revenue_buying_stage: revenueEngine.buyerState.buyingStage,
-    revenue_need_clarity: revenueEngine.buyerState.needClarity,
-    revenue_trust: revenueEngine.buyerState.trust,
-    revenue_urgency: revenueEngine.buyerState.urgency,
-    revenue_risk: revenueEngine.buyerState.risk,
-    revenue_budget: revenueEngine.buyerState.budget,
-    revenue_emotion: revenueEngine.buyerState.emotion,
-    revenue_authority: revenueEngine.buyerState.authority,
-    revenue_objection: revenueEngine.buyerState.objection,
-    revenue_cognitive_bias: revenueEngine.buyerState.cognitiveBias,
-    revenue_buyer_signals: revenueEngine.buyerState.signals.join(", "),
-    revenue_playbook_name: revenueEngine.playbook.name,
-    revenue_playbook_label: revenueEngine.playbook.label,
-    revenue_playbook_objective: revenueEngine.playbook.objective,
-    revenue_playbook_blueprint: revenueEngine.playbook.responseBlueprint.join(" -> "),
-    revenue_cta_type: revenueEngine.cta.type,
-    revenue_cta_label: revenueEngine.cta.label,
-    revenue_cta_reason: revenueEngine.cta.reason,
-    revenue_close_type: revenueEngine.cta.closeType,
-    revenue_lead_should_capture: revenueEngine.leadCapture.shouldCapture ? "true" : "false",
-    revenue_lead_trigger: revenueEngine.leadCapture.trigger,
-    revenue_lead_reason: revenueEngine.leadCapture.reason,
-    revenue_response_contract: buildResponseContractPrompt({
-      contract: revenueEngine.responseContract,
-      playbook: revenueEngine.playbook,
-    }),
-    revenue_engine_json: safeJson(revenueEngine, 12000),
-    page_context_json: safeJson(context, 12000),
-  };
-};
-
-const getFlowiseText = (payload: unknown) => {
+const getOpenAiResponseText = (payload: unknown) => {
   if (!payload || typeof payload !== "object") return "";
 
   const data = payload as Record<string, unknown>;
-  return asText(data.text || data.answer || data.response || data.output, 8000);
+  const outputText = data.output_text;
+  if (typeof outputText === "string") return asText(outputText, 8000);
+
+  const output = Array.isArray(data.output) ? data.output : [];
+  const text = output
+    .flatMap((item) => {
+      if (!item || typeof item !== "object") return [];
+      const content = (item as Record<string, unknown>).content;
+      return Array.isArray(content) ? content : [];
+    })
+    .map((content) => {
+      if (!content || typeof content !== "object") return "";
+      const item = content as Record<string, unknown>;
+      return typeof item.text === "string" ? item.text : "";
+    })
+    .filter(Boolean)
+    .join("\n");
+
+  return asText(text, 8000);
 };
 
 const getOpenAiCost = (payload: unknown) => {
   if (!payload || typeof payload !== "object") return 0;
 
   const data = payload as Record<string, unknown>;
-  const usage = data.usage as Record<string, unknown> | undefined;
-  const cost =
-    data.totalCost ||
-    data.cost ||
-    usage?.totalCost ||
-    usage?.cost ||
-    usage?.total_cost;
+  const cost = data.totalCost || data.cost || data.total_cost;
   const parsed = Number(cost);
 
   return Number.isFinite(parsed) ? parsed : 0;
+};
+
+const callOpenAiSalesAnswer = async ({
+  message,
+  context,
+  catalogSearch,
+  revenueEngine,
+}: {
+  message: string;
+  context: PageContext;
+  catalogSearch: {
+    ok: boolean;
+    message: string;
+    products: ProductCatalogResult[];
+  };
+  revenueEngine: RevenueEngineDecision;
+}) => {
+  const apiKey = process.env.OPENAI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("OPENAI_API_KEY is not configured.");
+  }
+
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: openAiModel(),
+      input: [
+        {
+          role: "system",
+          content: buildOpenAiSystemPrompt(
+            message,
+            catalogSearch.products,
+            revenueEngine,
+            context,
+            catalogSearch,
+          ),
+        },
+        {
+          role: "user",
+          content: redactPii(message),
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`OpenAI request failed: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = sanitizeAssistantText(getOpenAiResponseText(data));
+
+  return {
+    data,
+    text,
+    openAiCostUsd: getOpenAiCost(data),
+  };
 };
 
 const needsSafeAnswerFromCatalog = (message: string, context: PageContext) => {
@@ -348,7 +362,6 @@ export async function POST(request: NextRequest) {
   });
   if (!rate.ok) return rate.response;
 
-  const tenant = security.tenant;
   const responseHeaders = { ...security.headers, ...rate.headers };
   const startedAt = Date.now();
   const context = body.context ?? {};
@@ -393,28 +406,13 @@ export async function POST(request: NextRequest) {
       missingSafeAnswer: !catalogSearch.ok && needsSafeAnswerFromCatalog(message, context),
     });
 
-    const flowiseResponse = await fetch(
-      `${tenant.flowise.apiHost}/api/v1/prediction/${tenant.flowise.chatflowId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: buildFlowiseQuestion(message, catalogSearch.products, revenueEngine),
-          chatId,
-          overrideConfig: {
-            sessionId: chatId,
-            vars: contextToVars(context, catalogSearch, revenueEngine),
-          },
-        }),
-      },
-    );
-
-    if (!flowiseResponse.ok) {
-      throw new Error(`Flowise request failed: ${flowiseResponse.status}`);
-    }
-
-    const data = await flowiseResponse.json();
-    const text = sanitizeAssistantText(getFlowiseText(data));
+    const openAi = await callOpenAiSalesAnswer({
+      message,
+      context,
+      catalogSearch,
+      revenueEngine,
+    });
+    const text = openAi.text;
     const answer =
       text ||
       "I could not answer that from the current page context yet.";
@@ -428,7 +426,7 @@ export async function POST(request: NextRequest) {
       revenueEngine,
       catalogSearch,
       responseMs: Date.now() - startedAt,
-      openAiCostUsd: getOpenAiCost(data),
+      openAiCostUsd: openAi.openAiCostUsd,
     }).catch((error) => {
       console.error(error instanceof Error ? error.message : "Analytics logging failed.");
     });
@@ -463,7 +461,7 @@ export async function POST(request: NextRequest) {
       revenueEngine: fallbackRevenueEngine,
       catalogSearch: {
         ok: false,
-        message: "Flowise request failed.",
+        message: "OpenAI request failed.",
         products: [],
       },
       responseMs: Date.now() - startedAt,
