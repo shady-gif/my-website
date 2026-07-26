@@ -55,7 +55,7 @@ export default function RootLayout({
           }}
         />
         <script
-          src="/widget.js"
+          src="/widget.js?v=20260726-chat-fix"
           data-tenant="shadyy"
           async
         />
