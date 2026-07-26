@@ -7,6 +7,7 @@ interface DockItem {
   id: string
   name: string
   image: string
+  href?: string
   color?: string
   onClick?: () => void
 }
@@ -16,6 +17,7 @@ const dockItems = [
     id: "prompt-to-website",
     name: "Prompt to website",
     image: "/prompt-to-website.png",
+    href: "https://www.shadyy.org/prompt-to-website",
     onClick: () => {
       window.location.href = "https://www.shadyy.org/prompt-to-website"
     },
@@ -24,6 +26,7 @@ const dockItems = [
     id: "ai-ppt",
     name: "Free AI PPT",
     image: "/ai-ppt.jpeg",
+    href: "/ppt",
     onClick: () => {
       window.location.href = "/ppt"
     },
@@ -32,18 +35,21 @@ const dockItems = [
     id: "ai-pics",
     name: "Free AI Pics",
     image: "/ai-pics.jpeg",
+    href: "https://for-ppt.vercel.app/",
     onClick: () => window.open("https://for-ppt.vercel.app/", "_blank"),
   },
   {
     id: "quick-game",
     name: "Quick Game?",
     image: "/quick-game.jpeg",
+    href: "https://coastal-break-run.vercel.app/",
     onClick: () => window.open("https://coastal-break-run.vercel.app/", "_blank"),
   },
   {
     id: "go-top",
     name: "Go Top",
     image: "/go-top.jpeg",
+    href: "#top",
     onClick: () =>
       window.scrollTo({
         top: 0,
@@ -84,6 +90,9 @@ function DockIcon({ item, mouseX }: { item: DockItem; mouseX: MotionValue<number
       onMouseDown={() => setIsClicked(true)}
       onMouseUp={() => setIsClicked(false)}
       onClick={item.onClick}
+      data-shadyy-action="true"
+      data-shadyy-action-text={item.name}
+      data-shadyy-action-url={item.href}
       className="aspect-square cursor-pointer flex items-center justify-center relative group"
       whileTap={{ scale: 0.95 }}
     >

@@ -1,0 +1,11 @@
+.next/cache
+node_modules
+npm-debug.log
+.env
+.env.local
+.env.*.local
+data/chatbot-admin/files
+data/chatbot-admin/chunks
+public/downloads
+.git
+.DS_Store

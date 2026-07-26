@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local chatbot runtime data
+/data/chatbot-admin/*.json
+/data/chatbot-admin/files/
+/data/chatbot-admin/chunks/
