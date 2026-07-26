@@ -278,6 +278,43 @@ const needsSafeAnswerFromCatalog = (message: string, context: PageContext) => {
   ].some((word) => text.includes(word));
 };
 
+const createLocalSalesAnswer = (
+  message: string,
+  context: PageContext,
+  revenueEngine: RevenueEngineDecision,
+) => {
+  const text = [message, context.pageType, context.title, context.primaryHeading]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (revenueEngine.leadCapture.shouldCapture || /callback|call|contact|quote|budget/i.test(text)) {
+    return "Sure. Share your name and phone or email. I’ll capture this page and your request.";
+  }
+
+  if (/ppt|presentation|slide/.test(text)) {
+    return "Use Free AI PPT if you want slides fast. Open it, add your topic, and generate. Want help choosing the prompt?";
+  }
+
+  if (/website|template|preview|site/.test(text)) {
+    return "Start with Preview Website. Pick the closest style, then customize it for your business. Want the fastest option?";
+  }
+
+  if (/image|pic|photo|visual/.test(text)) {
+    return "Use AI Pics for images. It is the best fit when you need visuals quickly. Want the website option too?";
+  }
+
+  if (/mini store|install|local|desktop|download/.test(text)) {
+    return "Use Mini Store if you want local tools on your laptop. Open it, install, then launch the app. Need the download step?";
+  }
+
+  if (/which|choose|best|recommend|option|confused|help/.test(text)) {
+    return "Best first step: Preview Website for sites, Free AI PPT for slides, AI Pics for images. What are you trying to create?";
+  }
+
+  return "I can help with this page. Tell me your goal, and I’ll point you to the best next step.";
+};
+
 export async function OPTIONS(request: NextRequest) {
   return preflightResponse(request);
 }
@@ -416,11 +453,12 @@ export async function POST(request: NextRequest) {
       catalogResults: [],
       missingSafeAnswer: true,
     });
+    const fallbackAnswer = createLocalSalesAnswer(message, context, fallbackRevenueEngine);
     await recordConversationAnalytics({
       tenantId,
       chatId,
       question: message,
-      answer: "I could not reach the Shadyy assistant right now.",
+      answer: fallbackAnswer,
       pageContext: context,
       revenueEngine: fallbackRevenueEngine,
       catalogSearch: {
@@ -439,8 +477,13 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { text: "I could not reach the Shadyy assistant right now.", chatId },
-      { status: 502, headers: responseHeaders },
+      {
+        text: fallbackAnswer,
+        chatId,
+        cta: fallbackRevenueEngine.cta,
+        leadCapture: fallbackRevenueEngine.leadCapture,
+      },
+      { headers: responseHeaders },
     );
   }
 }

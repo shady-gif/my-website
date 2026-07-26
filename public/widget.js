@@ -4,7 +4,20 @@
 
   const currentScript = document.currentScript;
   const tenantId = currentScript?.getAttribute("data-tenant") || "shadyy";
-  const apiBase = new URL(currentScript?.src || window.location.href).origin;
+  const resolveApiBase = () => {
+    const explicitApiBase = currentScript?.getAttribute("data-api-base");
+    if (explicitApiBase) return explicitApiBase.replace(/\/$/, "");
+
+    const scriptOrigin = new URL(currentScript?.src || window.location.href).origin;
+    const host = window.location.hostname.toLowerCase();
+
+    if (host === "shadyy.org" || host === "www.shadyy.org") {
+      return "https://shadyy.vercel.app";
+    }
+
+    return scriptOrigin;
+  };
+  const apiBase = resolveApiBase();
 
   const defaultSelectors = {
     productTitle: ["[data-product-title]", "h1"],
