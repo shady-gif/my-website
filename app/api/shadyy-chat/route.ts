@@ -122,10 +122,10 @@ const catalogSearchQueryFromContext = (message: string, context: PageContext) =>
 };
 
 const openAiModel = () =>
-  process.env.SHADYY_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-5.6-sol";
+  process.env.SHADYY_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-5.6-luna";
 
 const openAiReasoningEffort = () =>
-  process.env.SHADYY_OPENAI_REASONING_EFFORT || "medium";
+  process.env.SHADYY_OPENAI_REASONING_EFFORT || "none";
 
 const openAiTextVerbosity = () =>
   process.env.SHADYY_OPENAI_TEXT_VERBOSITY || "low";
