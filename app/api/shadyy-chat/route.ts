@@ -451,7 +451,7 @@ export async function POST(request: NextRequest) {
       pageContext: context,
       productContext: context.tenantContext,
       catalogResults: [],
-      missingSafeAnswer: true,
+      missingSafeAnswer: needsSafeAnswerFromCatalog(message, context),
     });
     const fallbackAnswer = createLocalSalesAnswer(message, context, fallbackRevenueEngine);
     await recordConversationAnalytics({
