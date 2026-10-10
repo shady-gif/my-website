@@ -54,9 +54,10 @@ export default function RootLayout({
             `,
           }}
         />
-        <script
-          src="https://sadie-shadyy-ai.ava-sdr.workers.dev/embed.js"
-          async
+        <Script
+          id="sadie-chatbot"
+          src="https://sadie-shadyy-ai.ava-sdr.workers.dev/embed.js?v=20261011"
+          strategy="afterInteractive"
         />
       </body>
     </html>
