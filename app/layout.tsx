@@ -55,8 +55,7 @@ export default function RootLayout({
           }}
         />
         <script
-          src="/widget.js?v=20260726-chat-fix"
-          data-tenant="shadyy"
+          src="https://sadie-shadyy-ai.ava-sdr.workers.dev/embed.js"
           async
         />
       </body>
